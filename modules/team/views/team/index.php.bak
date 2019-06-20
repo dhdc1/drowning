@@ -1,0 +1,70 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+
+/* @var $this yii\web\View */
+/* @var $searchModel app\modules\team\models\TeamSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = 'ทีมผู้ก่อการดี';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="team-index">
+
+
+    <?php Pjax::begin(); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a('<i class="glyphicon glyphicon-plus"></i> เพิ่มทีม', ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?=
+    GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+            //'id',
+            [
+                'attribute' => 'team_name',
+            ],
+            [
+                'attribute'=>'team_level',
+                'filter'=>[
+                    'ทอง'=>'ทอง',
+                    'เงิน'=>'เงิน',
+                    'ทองแดง'=>'ทองแดง'
+                ]
+            ],
+            [
+                'attribute' => 'ampur',
+                'value' => 'campur.ampurname'
+            ],
+            [
+                'attribute' => 'changwat',
+                'value' => 'cchangwat.changwatname'
+            ],
+            //'approv_date:text:รับรองผล',
+            'myear:text:ปีงบประมาณ',
+            //'changwat',
+            //'ampur',
+            
+            /* [
+              'label'=>'',
+              'format'=>'raw',
+              'value'=>function(){
+              return Html::a('สมาชิก',['/team/member/index'],['class'=>'btn btn-info']);
+              }
+              ], */
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template' => '{view}'
+            ],
+        ],
+    ]);
+    ?>
+    <?php Pjax::end(); ?>
+</div>
