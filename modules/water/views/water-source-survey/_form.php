@@ -87,7 +87,7 @@ use yii\helpers\Url;
 
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'safty_manage')->dropDownList(['มีแนวกั้น-รั้วกัน' => 'มีแนวกั้น-รั้วกัน', 'มีป้ายคำเตือน' => 'มีป้ายคำเตือน', 'มีวัสดุอุปกรณ์ช่วยคนตกน้ำ' => 'มีวัสดุอุปกรณ์ช่วยคนตกน้ำ',]) ?>
+            <?= $form->field($model, 'safty_manage')->dropDownList(['ไม่มีการป้องกัน' => 'ไม่มีการป้องกัน', 'มีแนวกั้น-รั้วกัน' => 'มีแนวกั้น-รั้วกัน', 'มีป้ายคำเตือน' => 'มีป้ายคำเตือน', 'มีวัสดุอุปกรณ์ช่วยคนตกน้ำ' => 'มีวัสดุอุปกรณ์ช่วยคนตกน้ำ',]) ?>
 
 
         </div>
@@ -100,9 +100,11 @@ use yii\helpers\Url;
             <?= $form->field($model, 'lat')->textInput(['maxlength' => true]) ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'lon',[
+            <?=
+            $form->field($model, 'lon', [
                 'template' => '{label}<div class="input-group">{input}<span  id="gps" class="btn btn-default input-group-addon"><i class="glyphicon glyphicon-screenshot"></i></span></div>{error}{hint}'
-            ])->textInput(['maxlength' => true]) ?>
+            ])->textInput(['maxlength' => true])
+            ?>
         </div>
 
     </div>
@@ -112,7 +114,7 @@ use yii\helpers\Url;
             <?= $form->field($model, 'survey_date')->textInput(['type' => 'date']) ?>
         </div>
         <div class="col-lg-6">
-            <?= $form->field($model, 'surveyer')->dropDownList(['จนท.สาธารณสุข' => 'จนท.สาธารณสุข', 'อาสาสมัครสาธารณสุข' => 'อาสาสมัครสาธารณสุข', 'กำนัน-ผู้ใหญ่บ้าน' => 'กำนัน-ผู้ใหญ่บ้าน', 'องค์การปกครองส่วนท้องถิ่น' => 'องค์การปกครองส่วนท้องถิ่น',]) ?>
+<?= $form->field($model, 'surveyer')->dropDownList(['จนท.สาธารณสุข' => 'จนท.สาธารณสุข', 'อาสาสมัครสาธารณสุข' => 'อาสาสมัครสาธารณสุข', 'กำนัน-ผู้ใหญ่บ้าน' => 'กำนัน-ผู้ใหญ่บ้าน', 'องค์การปกครองส่วนท้องถิ่น' => 'องค์การปกครองส่วนท้องถิ่น',]) ?>
 
         </div>
 
@@ -120,10 +122,10 @@ use yii\helpers\Url;
 
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+    <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
     </div>
 
-    <?php ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>
 
 </div>
 

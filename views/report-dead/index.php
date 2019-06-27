@@ -96,7 +96,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'ไทย' => 'ไทย',
                 'เมียนมาร์' => 'เมียนมาร์',
                 'ลาว' => 'ลาว',
-                'กัมพูชา' => 'กัมพูชา'
+                'กัมพูชา' => 'กัมพูชา',
+                'อื่นๆ'=>'อื่นๆ'
                     ], [
                 'style' => 'height: 32px;width: 150px'
                     ]
@@ -136,7 +137,7 @@ $this->params['breadcrumbs'][] = $this->title;
                     ]
                 ],
                 [
-                    'header' => 'เสียชีวิต',
+                    'header' => 'สถานะ',
                     'format' => 'raw',
                     'value' => function($model) {
                         if ($model->drowning_after_dead == 'ไม่เสียชีวิต') {
