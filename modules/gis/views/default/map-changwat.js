@@ -4,7 +4,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoidGVobm5uIiwiYSI6ImNpZzF4bHV4NDE0dTZ1M200YWxwe
 var map = L.mapbox.map('map', 'mapbox.streets').setView([16, 100], 8);
 
 //จังหวัด
-var featureLayerChangwat = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/json-changwat').on('ready', () => {
+var featureLayerChangwat = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/json-changwat&cyear=2019').on('ready', () => {
     map.fitBounds(featureLayerChangwat.getBounds());
     featureLayerChangwat.on('click', function (e) {
         if (e.layer.feature)

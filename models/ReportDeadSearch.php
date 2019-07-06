@@ -12,6 +12,8 @@ use app\models\ReportDead;
  */
 class ReportDeadSearch extends ReportDead {
 
+    public $s_age;
+    public $s_nation;
     /**
      * {@inheritdoc}
      */
@@ -71,7 +73,7 @@ class ReportDeadSearch extends ReportDead {
             'province_addr' => $this->province_addr,
             'amphur_addr' => $this->amphur_addr,
             'tambon_addr' => $this->tambon_addr,
-            //'age' => $this->age,
+            'age' => $this->age,
             'drowning_province' => $this->drowning_province,
             'drowning_amphur' => $this->drowning_amphur,
             'drowning_tambon' => $this->drowning_tambon,
@@ -83,7 +85,7 @@ class ReportDeadSearch extends ReportDead {
             'report_date' => $this->report_date,
             'd_update' => $this->d_update,
             's_year' => $this->s_year,
-            's_nation' => $this->s_nation,
+            'national' => $this->s_nation,
                 //'s_age'=>$this->s_age
         ]);
 

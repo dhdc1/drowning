@@ -99,10 +99,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             เลือกปี 
             <?php
-            $yy = [
-                '2019' => '2562',
-                '2018' => '2561',
-            ];
+            $cur_year = (int) date('Y');
+            $min_year = 2018;
+            for($y=$cur_year;$y>=$min_year;$y--){
+                $yy[$y] = $y+543;
+            }            
             ?>
             <?=
             Html::dropDownList('s_year', $s_year, $yy, [
@@ -207,7 +208,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   return "***";
                   }
                   ], */
-                's_nation',
+                'national',
                 //'s_year',
                 //'sex',
                 //'home_addr',

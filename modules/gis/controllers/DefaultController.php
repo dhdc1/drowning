@@ -18,8 +18,13 @@ class DefaultController extends Controller {
         return $this->render('index');
     }
 
-    public function actionMapChangwat() {
-        return $this->render('map-changwat');
+    public function actionMapChangwat($cyear=NULL) {
+        if(empty($cyear)){
+            $cyear = date('Y');
+        }
+        return $this->render('map-changwat',[
+            'cyear' => $cyear
+        ]);
     }
     
     public function actionMapWater(){
@@ -46,9 +51,14 @@ class DefaultController extends Controller {
         }
     }
 
-    public function actionJsonChangwat() {
+    public function actionJsonChangwat($cyear=NULL) {
+        
+        if(empty($cyear)){
+            $cyear = date('Y');
+        }
 
-        $sql = "select * from gis_changwat";
+        $sql = "SELECT t.changwatcode,t.changwatname,t.geodata,c.dyear,c.rate from gis_changwat t
+LEFT JOIN tmp_rate_changwat c on t.changwatcode = c.changwatcode AND c.dyear = '$cyear'";
         $raw = \Yii::$app->db->createCommand($sql)->queryAll();
 
         $feature = [];
@@ -59,11 +69,11 @@ class DefaultController extends Controller {
                 'properties' => [
                     'changwatcode' => $value['changwatcode'],
                     'changwatname' => $value['changwatname'],
-                    'note1'=>$value['note1'],
+                    'note1'=>$value['rate'],
                     "stroke" => "#363636",
                     "stroke-width" => 2,
                     "stroke-opacity" => 1,
-                    "fill" => $this->color($value['note1']),
+                    "fill" => $this->color($value['rate']),
                     "fill-opacity" => 0.5
                 ],
                 'geometry' => [
@@ -76,7 +86,11 @@ class DefaultController extends Controller {
         return Json::encode($feature);
     }
 
-    public function actionJsonAmpur() {
+    public function actionJsonAmpur($cyear = NULL) {
+        
+        if(empty($cyear)){
+            $cyear = date('Y');
+        }
 
         $sql = "SELECT a.ampurcode,a.ampurname,a.geodata
 ,count(t.amphur_addr) d_case

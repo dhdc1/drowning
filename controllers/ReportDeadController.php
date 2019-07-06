@@ -49,7 +49,7 @@ class ReportDeadController extends Controller {
      * Lists all ReportDead models.
      * @return mixed
      */
-    public function actionIndex($s_year = NULL, $s_nation = NULL, $s_age = NULL) {
+    public function actionIndex($s_year = Null, $s_nation = NULL, $s_age = NULL) {
         $searchModel = new ReportDeadSearch();
         $params = Yii::$app->request->queryParams;
         $params['ReportDeadSearch']['s_year'] = $s_year;

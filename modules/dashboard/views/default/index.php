@@ -56,7 +56,7 @@ $syear = $byear - 1;
             <div class="col-md-12">
                 <div class="panel panel-default">
                     <div class="panel-heading"><object>แผนที่แสดงอัตราเสียชีวิต ปีพ.ศ.<?= $syear ?></object> <object align='right'>
-                            <?= Html::a('<i class="glyphicon glyphicon-fullscreen"></i>', ['/gis/default/map-changwat']); ?>
+                            <?= Html::a('<i class="glyphicon glyphicon-fullscreen"></i>', ['/gis/default/map-changwat','cyear'=>$cyear]); ?>
                         </object></div>
                     <div class="panel-body">
                         <?php
@@ -114,27 +114,18 @@ $syear = $byear - 1;
                   ]); */
                 ?>
                 <div class="panel panel-default">
-                    <div class="panel-heading">เพศเสียชีวิต (ชาย:หญิง) ปีพ.ศ.<?= $byear ?></div>
+                    <div class="panel-heading">เสียชีวิต ชาย:หญิง ปีพ.ศ.<?= $byear ?></div>
                     <div class="panel-body">
                         <?php
-                        $sql = "SELECT * from tmp_count_sex where sex = 'ชาย'";
-                        $model = \Yii::$app->db->createCommand($sql);
-                        $data = $model->queryAll();
-                        for ($i = 0; $i < sizeof($data); $i++) {
-                            $male = $data[$i]['cc'];
-                        }
-                        $sql = "SELECT * from tmp_count_sex where sex = 'หญิง'";
-                        $model = \Yii::$app->db->createCommand($sql);
-                        $data = $model->queryAll();
-                        for ($i = 0; $i < sizeof($data); $i++) {
-                            $female = $data[$i]['cc'];
-                        }
+                        $sql = "SELECT y,m,f from tmp_count_sex where y = '$cyear' limit 1";
+                        $raw = \Yii::$app->db->createCommand($sql)->queryOne();
+                        
                         ?>
                         <div class="row">
                             <div style="text-align: center;">
                                 <img src="img/children.png" width="100px" height="100px" style="margin-left:  10px;">
                             </div>
-                            <h3 class="text-center"><?php echo $male . ":" . $female; ?>
+                            <h3 class="text-center"><?php echo $raw['m'] . ":" . $raw['f']; ?>
                         </div>
                     </div>
 
@@ -144,12 +135,12 @@ $syear = $byear - 1;
             </div>
             <div class="col-md-6">
                 <?php
-                $sqlcc = "SELECT * from tmp_count_type ORDER BY cc desc limit 5";
+                $sqlcc = "SELECT * from tmp_count_type where y='$cyear' ORDER BY n desc limit 5";
                 $modelcc = \Yii::$app->db->createCommand($sqlcc);
                 $datacc = $modelcc->queryAll();
                 for ($i = 0; $i < sizeof($datacc); $i++) {
-                    $name[] = $datacc[$i]['drowning_type'];
-                    $cc[] = $datacc[$i]['cc'] * 1;
+                    $name[] = $datacc[$i]['t'];
+                    $cc[] = $datacc[$i]['n'] * 1;
                 }
 
                 echo Highcharts::widget([
@@ -181,14 +172,15 @@ $syear = $byear - 1;
         <div class="row">
 
             <div class="col-md-12">
-                <h3 class="text-center">จำนวนเด็กไทยอายุ<15ปี จมน้ำ ปีพ.ศ.<?= $byear ?></h3>
+                <h3 class="text-center">เด็กไทยอายุต่ำกว่า15ปี จมน้ำ ปีพ.ศ.<?= $byear ?></h3>
                 <?php
                 $sql = " SELECT c.changwatname 'prov'
 ,COUNT(t.drowning_province) 'total'
 ,COUNT(if(t.drowning_after_dead !='ไม่เสียชีวิต',1,null)) 'dead'
 ,COUNT(if(t.drowning_after_dead ='ไม่เสียชีวิต',1,null)) 'surviv'
 from report_dead t  left JOIN cchangwat c on c.changwatcode = t.drowning_province
-GROUP BY t.drowning_province ";
+where t.s_year = '$cyear' and t.age <= '15'
+GROUP BY t.drowning_province  ";
 
                 $model = \Yii::$app->db->createCommand($sql);
                 $data = $model->queryAll();
@@ -241,7 +233,7 @@ GROUP BY t.drowning_province ";
         <div class="row">
             <div class="col-md-12">
                 <?php
-                $sqldate = "SELECT * from tmp_count_month";
+                $sqldate = "SELECT * from tmp_count_month where y='$cyear'";
                 $modeldate = \Yii::$app->db->createCommand($sqldate);
                 $datadate = $modeldate->queryAll();
                 $dataProvider = new ArrayDataProvider([
@@ -250,7 +242,7 @@ GROUP BY t.drowning_province ";
                 $raw = $dataProvider->getModels();
                 $data = [];
                 foreach ($raw as $value) {
-                    $data[] = [$value['cc'] * 1];
+                    $data[] = [$value['n'] * 1];
                 }
 
                 echo Highcharts::widget([
