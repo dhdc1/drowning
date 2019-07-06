@@ -13,6 +13,9 @@ use yii\web\JsExpression;
 
 $this->title = 'Dashboard';
 $this->params['breadcrumbs'][] = $this->title;
+
+$byear = (int) $cyear + 543;
+$syear = $byear - 1;
 ?>
 
 
@@ -23,16 +26,22 @@ $this->params['breadcrumbs'][] = $this->title;
                     'method' => 'get',
                     'action' => Url::to(['index'])
         ]);
-        $year = trim(\Yii::$app->request->get('year'));
-        $range = range(2016, 2018);
+      
         ?>
         <div class="form-group row">
 
             <div class="col-xs-9">
                 ปี พ.ศ.
-                <select class="form-control">
-                    <option value="2019" >2562</option>
-                    <option value="2018" selected>2561</option>
+                <select class="form-control" name="cyear" id='cyear'>
+                    <?php
+                    $cur_year = (int)date('Y');
+                    $min_year = 2018;
+                    for($y=$cur_year;$y>=$min_year;$y--):
+                    ?>
+                    <option value="<?=$y?>" <?= $cyear == $y ? 'selected' : '' ?>><?=$y+543?></option>
+                    <?php
+                    endfor;
+                    ?>
                 </select>
             </div>
             <div class="col-xs-3">
@@ -46,12 +55,14 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row" >
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><object>แผนที่แสดงอัตราเสียชีวิต ปีพ.ศ.2561</object> <object align='right'>
+                    <div class="panel-heading"><object>แผนที่แสดงอัตราเสียชีวิต ปีพ.ศ.<?= $syear ?></object> <object align='right'>
                             <?= Html::a('<i class="glyphicon glyphicon-fullscreen"></i>', ['/gis/default/map-changwat']); ?>
                         </object></div>
                     <div class="panel-body">
                         <?php
-                        echo $this->render('map');
+                        echo $this->render('map',[
+                            'cyear'=>$cyear
+                        ]);
                         ?>
 
                     </div>
@@ -103,7 +114,7 @@ $this->params['breadcrumbs'][] = $this->title;
                   ]); */
                 ?>
                 <div class="panel panel-default">
-                    <div class="panel-heading">เพศเสียชีวิต (ชาย:หญิง) ปีพ.ศ.2561</div>
+                    <div class="panel-heading">เพศเสียชีวิต (ชาย:หญิง) ปีพ.ศ.<?= $byear ?></div>
                     <div class="panel-body">
                         <?php
                         $sql = "SELECT * from tmp_count_sex where sex = 'ชาย'";
@@ -143,7 +154,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 echo Highcharts::widget([
                     'options' => [
-                        'title' => ['text' => 'แหล่งน้ำเสียชีวิต ปีพ.ศ.2561'],
+                        'title' => ['text' => 'แหล่งน้ำเสียชีวิต ปีพ.ศ.' . $byear],
                         'credits' => false,
                         'xAxis' => [
                             'categories' => $name
@@ -170,7 +181,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="row">
 
             <div class="col-md-12">
-                <h3 class="text-center">จำนวนเด็กไทยอายุ<15ปี จมน้ำ ปีพ.ศ.2561</h3>
+                <h3 class="text-center">จำนวนเด็กไทยอายุ<15ปี จมน้ำ ปีพ.ศ.<?= $byear ?></h3>
                 <?php
                 $sql = " SELECT c.changwatname 'prov'
 ,COUNT(t.drowning_province) 'total'
@@ -244,7 +255,7 @@ GROUP BY t.drowning_province ";
 
                 echo Highcharts::widget([
                     'options' => [
-                        'title' => ['text' => 'ช่วงเวลาการเสียชีวิต ปีพ.ศ.2561'],
+                        'title' => ['text' => 'ช่วงเวลาการเสียชีวิต ปีพ.ศ.' . $byear],
                         'credits' => false,
                         'xAxis' => [
                             'categories' => ['มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 'กรกฏาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤษจิกายน', 'ธันวาคม']

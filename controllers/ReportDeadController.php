@@ -49,13 +49,21 @@ class ReportDeadController extends Controller {
      * Lists all ReportDead models.
      * @return mixed
      */
-    public function actionIndex() {
+    public function actionIndex($s_year = NULL, $s_nation = NULL, $s_age = NULL) {
         $searchModel = new ReportDeadSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $params = Yii::$app->request->queryParams;
+        $params['ReportDeadSearch']['s_year'] = $s_year;
+        $params['ReportDeadSearch']['s_nation'] = $s_nation;
+        $params['ReportDeadSearch']['s_age'] = $s_age;
+        $dataProvider = $searchModel->search($params);
 
         return $this->render('index', [
                     'searchModel' => $searchModel,
                     'dataProvider' => $dataProvider,
+                    's_year' => $s_year,
+                    's_nation' => $s_nation,
+                    's_age' => $s_age,
+                    'params'=>$params
         ]);
     }
 
@@ -175,9 +183,9 @@ class ReportDeadController extends Controller {
      * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id) {
-        
+
         CheckArea::allowAccessCase();
-        if(!\Yii::$app->user->can('admin')){
+        if (!\Yii::$app->user->can('admin')) {
             throw new \yii\web\ForbiddenHttpException("ท่านไม่ได้รับอนุญาตให้ลบข้อมูล กรุณาประสานผู้รับผิดชอบงานของ สคร.ที่ 2 โทร 055-214615");
             return;
         }

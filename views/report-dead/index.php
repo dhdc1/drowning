@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use app\components\MyHelper;
+use yii\widgets\ActiveForm;
+use yii\helpers\Url;
 
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\ReportDeadSearch */
@@ -11,6 +13,13 @@ use app\components\MyHelper;
 $this->title = 'ทะเบียนรายงานการสอบสวน';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
+<div>
+
+    <?php
+    //print_r($params);
+    ?>
+
+</div>
 <div class="report-dead-index">
 
 
@@ -74,51 +83,86 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
 
-
+    <?php
+    ActiveForm::begin([
+        'method' => 'GET',
+        'action' => Url::toRoute('index')
+    ]);
+    ?>
 
     <div>
         <span style="padding: 15px;background-color: whitesmoke">
             <?= Html::a('<i class="glyphicon glyphicon-plus"></i> เพิ่มรายงาน', ['create'], ['class' => 'btn btn-success']) ?>
         </span>
+
         <span style="margin-left: 100px;padding: 15px;background-color: yellow">
+
             เลือกปี 
-            <?=
-            Html::dropDownList('s_year', '', [
+            <?php
+            $yy = [
+                '2019' => '2562',
                 '2018' => '2561',
-                '2019' => '2562'
-                    ], [
+            ];
+            ?>
+            <?=
+            Html::dropDownList('s_year', $s_year, $yy, [
+                'prompt' => '',
                 'style' => 'height: 32px;width: 150px'
             ])
             ?>
             เลือกสัญชาติ   
-            <?=
-            Html::dropDownList('s_nation', '', [
+            <?php
+            $nat = [
                 'ไทย' => 'ไทย',
                 'เมียนมาร์' => 'เมียนมาร์',
-                'ลาว' => 'ลาว',
                 'กัมพูชา' => 'กัมพูชา',
-                'อื่นๆ'=>'อื่นๆ'
-                    ], [
+                'ลาว' => 'ลาว',
+                'เวียดนาม' => 'เวียดนาม',
+                'จีน' => 'จีน',
+                'อเมริกัน' => 'อเมริกัน',
+                'อื่นๆ' => 'อื่นๆ'
+            ];
+            ?>
+            <?=
+            Html::dropDownList('s_nation', $s_nation, $nat, [
+                'prompt' => '',
                 'style' => 'height: 32px;width: 150px'
                     ]
             )
             ?>
             เลือกอายุ 
+            <?php
+            $cage = [
+                '0-3' => '0-3  ปี',
+                '0-4' => '0-4  ปี',
+                '5-9' => '5-9  ปี',
+                '10-14' => '10-14 ปี',
+                '15-19' => '15-19 ปี',
+                '20-24' => '20-24 ปี',
+                '25-29' => '25-29 ปี',
+                '30-34' => '30-34 ปี',
+                '35-39' => '35-39 ปี',
+                '40-44' => '40-44 ปี',
+                '45-49' => '45-49 ปี',
+                '50-54' => '50-54 ปี',
+                '55-59' => '55-59 ปี',
+                '60-120' => '60 ปีขึ้นไป',
+            ];
+            ?>
             <?=
-            Html::dropDownList('s_age', '', [
-                '1' => '0-3  ปี',
-                '2' => '0-4  ปี',
-                '3' => '5-9  ปี',
-                '4' => '10-14 ปี',
-                '5' => '15-19 ปี',
-                '6' => '20-24 ปี'
-                    ], [
+            Html::dropDownList('s_age', $s_age, $cage, [
+                'prompt' => '',
                 'style' => 'height: 32px;width: 150px'
             ])
             ?>
             <button class="btn btn-blue"><i class="glyphicon glyphicon-search"></i></button>
+
         </span>
+
     </div>
+    <?php
+    ActiveForm::end();
+    ?>
 
     <div style="margin-top: 15px">
 
@@ -128,12 +172,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'filterModel' => $searchModel,
             'columns' => [
                 //['class' => 'yii\grid\SerialColumn'],
-
                 //'id',
                 [
-                    'attribute'=>'id',
-                    'headerOptions'=>[
-                        'style'=>'width:15px'
+                    'attribute' => 'id',
+                    'headerOptions' => [
+                        'style' => 'width:15px'
                     ]
                 ],
                 [
@@ -158,12 +201,14 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'dead_date',
                 'pname',
                 'fname',
-                [
-                    'attribute'=>'lname',
-                    'value'=>function(){
-                        return "***";
-                    }
-                ],
+                /* [
+                  'attribute' => 'lname',
+                  'value' => function() {
+                  return "***";
+                  }
+                  ], */
+                's_nation',
+                //'s_year',
                 //'sex',
                 //'home_addr',
                 //'no_addr',
@@ -171,7 +216,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 //'province_addr',
                 //'amphur_addr',
                 //'tambon_addr',
-                //'age',
+                'age',
                 //'national',
                 //'can_swim',
                 //'drowning_type',
@@ -184,7 +229,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 [
                     'attribute' => 'drowning_province',
                     'value' => 'changwatdrown.changwatname',
-                    'filter'=>['65'=>'พิษณุโลก','53'=>'อุตรดิตถ์','63'=>'ตาก','67'=>'เพชรบูรณ์','64'=>'สุโขทัย']
+                    'filter' => ['65' => 'พิษณุโลก', '53' => 'อุตรดิตถ์', '63' => 'ตาก', '67' => 'เพชรบูรณ์', '64' => 'สุโขทัย']
                 ],
                 [
                     'attribute' => 'drowning_amphur',

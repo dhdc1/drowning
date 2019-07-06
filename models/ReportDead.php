@@ -86,6 +86,9 @@ use yii\db\Expression;
  * @property int $report_fax
  * @property string $report_date
  * @property string $d_update
+ * @property string $s_year
+ * @property string $s_nation
+ * @property string $s_age
  */
 class ReportDead extends \yii\db\ActiveRecord {
 
@@ -104,7 +107,7 @@ class ReportDead extends \yii\db\ActiveRecord {
     public function rules() {
         return [
             [['cid', 'moo_addr', 'age', 'ageMonth', 'drowning_number', 'drowning_number_dead', 'drowning_number_alive', 'report_tel', 'report_fax'], 'integer'],
-            [['drowning_date', 'drowning_time', 'dead_date', 'report_date', 'd_update', 'drowning_des',], 'safe'],
+            [['drowning_date', 'drowning_time', 'dead_date', 'report_date', 'd_update', 'drowning_des','s_year','s_nation','s_age'], 'safe'],
             [['sex', 'drowning_location'], 'string'],
             [['icd_code', 'can_swim', 'pool_depth', 'drowning_length', 'province_addr', 'amphur_addr', 'tambon_addr', 'drowning_province', 'drowning_amphur', 'drowning_tambon',], 'string', 'max' => 30],
             [['pname', 'drowning_accessory_yes', 'drowning_helper', 'drowning_rescue_water', 'report_province'], 'string', 'max' => 50],
@@ -195,6 +198,9 @@ class ReportDead extends \yii\db\ActiveRecord {
             'report_fax' => 'โทรสาร',
             'report_date' => 'วันที่รายงาน',
             'd_update' => 'วันที่ update',
+            's_year'=>'ปีที่จม',
+            's_nation'=>'สัญชาติ',
+            's_age'=>'กลุ่มอายุ'
         ];
     }
 
