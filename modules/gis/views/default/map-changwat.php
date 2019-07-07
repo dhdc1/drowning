@@ -1,4 +1,8 @@
 <?php
+
+use yii\helpers\Html;
+use yii\helpers\Url;
+
 $this->params['breadcrumbs'][] = 'ระบบสารสนเทศทางภูมิศาสตร์แสดงข้อมูลการจมน้ำ';
 ?>
 <div >
@@ -11,12 +15,23 @@ $this->params['breadcrumbs'][] = 'ระบบสารสนเทศทาง�
 
         </span>
     </div>
-    <div class="pull-left">
-        ปี พ.ศ.<?=$cyear+543?> 
+    <div class="pull-left" style="">
+        <?php
+        $cur_year = date('Y');
+        $cur_year = (int) $cur_year;
+        $begin_yaer = 2018;
+        $items = [];
+        while ($cur_year >= $begin_yaer) {
+            $items[$cur_year] = $cur_year + 543;
+            $cur_year--;
+        }
+        ?>
+        ปี พ.ศ. <?= Html::dropDownList($cyear, $cyear, $items,['style'=>'width:100px','id'=>'cyear'])?>
+
     </div>
 
 </div>
-<div id="map" style="width: 100%;height: 560px">
+<div id="map" style="width: 100%;height: 560px;margin-top: 25px">
 
 </div>
 
@@ -24,9 +39,14 @@ $this->params['breadcrumbs'][] = 'ระบบสารสนเทศทาง�
 $this->registerJsFile('//api.mapbox.com/mapbox.js/v3.1.1/mapbox.js');
 $this->registerCssFile('//api.mapbox.com/mapbox.js/v3.1.1/mapbox.css');
 $this->registerCss($this->render('style.css'));
+$r = Url::toRoute('map-changwat');
 
-$js =<<<JS
-   
+$js = <<<JS
+ 
+$('#cyear').change(function(){
+    val = $(this).val();
+    window.location = '$r&cyear='+val;
+});
  
  
 

@@ -95,7 +95,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a('<i class="glyphicon glyphicon-plus"></i> เพิ่มรายงาน', ['create'], ['class' => 'btn btn-success']) ?>
         </span>
 
-        <span style="margin-left: 100px;padding: 15px;background-color: yellow">
+        <span style="margin-left: 100px;padding: 15px;background-color: lightseagreen;color: white">
 
             เลือกปี 
             <?php
@@ -107,8 +107,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             <?=
             Html::dropDownList('s_year', $s_year, $yy, [
-                'prompt' => '',
-                'style' => 'height: 32px;width: 150px'
+                'prompt' => 'ทั้งหมด',
+                'style' => 'height: 32px;width: 150px;color: black'
             ])
             ?>
             เลือกสัญชาติ   
@@ -126,8 +126,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             <?=
             Html::dropDownList('s_nation', $s_nation, $nat, [
-                'prompt' => '',
-                'style' => 'height: 32px;width: 150px'
+                'prompt' => 'ทั้งหมด',
+                'style' => 'height: 32px;width: 150px;color: black'
                     ]
             )
             ?>
@@ -152,8 +152,8 @@ $this->params['breadcrumbs'][] = $this->title;
             ?>
             <?=
             Html::dropDownList('s_age', $s_age, $cage, [
-                'prompt' => '',
-                'style' => 'height: 32px;width: 150px'
+                'prompt' => 'ทั้งหมด',
+                'style' => 'height: 32px;width: 150px;color: black'
             ])
             ?>
             <button class="btn btn-blue"><i class="glyphicon glyphicon-search"></i></button>
