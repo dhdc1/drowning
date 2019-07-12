@@ -90,7 +90,7 @@ AppAsset::register($this);
                 <p class="pull-left">
                     <span style="background-color:#C71585;color:white;padding:5px"> &copy;  <?= date('Y') ?> <a target='_blank' href="https://ddc.moph.go.th/th/site/office/view/odpc2">สคร.2</a>, สำนักงานป้องกันควบคุมโรคที่ 2 จังหวัดพิษณุโลก </span>
 
-                    <span style="background-color:red;color:white;padding:5px"> Version 1.2.0-build-2019-06-10</span>
+                    <span style="background-color:red;color:white;padding:5px"> Version 1.2.2-build-2019-07-12</span>
 
                 </p>
 
