@@ -26,7 +26,6 @@ $syear = $byear - 1;
                     'method' => 'get',
                     'action' => Url::to(['index'])
         ]);
-      
         ?>
         <div class="form-group row">
 
@@ -34,12 +33,12 @@ $syear = $byear - 1;
                 ปี พ.ศ.
                 <select class="form-control" name="cyear" id='cyear'>
                     <?php
-                    $cur_year = (int)date('Y');
+                    $cur_year = (int) date('Y');
                     $min_year = 2018;
-                    for($y=$cur_year;$y>=$min_year;$y--):
-                    ?>
-                    <option value="<?=$y?>" <?= $cyear == $y ? 'selected' : '' ?>><?=$y+543?></option>
-                    <?php
+                    for ($y = $cur_year; $y >= $min_year; $y--):
+                        ?>
+                        <option value="<?= $y ?>" <?= $cyear == $y ? 'selected' : '' ?>><?= $y + 543 ?></option>
+                        <?php
                     endfor;
                     ?>
                 </select>
@@ -55,13 +54,16 @@ $syear = $byear - 1;
         <div class="row" >
             <div class="col-md-12">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><object>แผนที่แสดงอัตราเสียชีวิต ปีพ.ศ.<?= $syear ?></object> <object align='right'>
-                            <?= Html::a('<i class="glyphicon glyphicon-fullscreen"></i>', ['/gis/default/map-changwat','cyear'=>$cyear]); ?>
-                        </object></div>
+                    <div class="panel-heading">
+                        <object>แผนที่แสดงอัตราเสียชีวิต ปีพ.ศ.<?= $syear ?></object>
+                        <object align='right'>
+                            <?= Html::a('<i class="glyphicon glyphicon-fullscreen"></i>', ['/gis/default/map-changwat', 'cyear' => $cyear]); ?>
+                        </object>
+                    </div>
                     <div class="panel-body">
                         <?php
-                        echo $this->render('map',[
-                            'cyear'=>$cyear
+                        echo $this->render('map', [
+                            'cyear' => $cyear
                         ]);
                         ?>
 
@@ -119,7 +121,6 @@ $syear = $byear - 1;
                         <?php
                         $sql = "SELECT y,m,f from tmp_count_sex where y = '$cyear' limit 1";
                         $raw = \Yii::$app->db->createCommand($sql)->queryOne();
-                        
                         ?>
                         <div class="row">
                             <div style="text-align: center;">
@@ -179,7 +180,7 @@ $syear = $byear - 1;
 ,COUNT(if(t.drowning_after_dead !='ไม่เสียชีวิต',1,null)) 'dead'
 ,COUNT(if(t.drowning_after_dead ='ไม่เสียชีวิต',1,null)) 'surviv'
 from report_dead t  left JOIN cchangwat c on c.changwatcode = t.drowning_province
-where t.s_year = '$cyear' and t.age <= '15'
+where t.s_year = '$cyear' and t.age <= '15' and t.national = 'ไทย'
 GROUP BY t.drowning_province  ";
 
                 $model = \Yii::$app->db->createCommand($sql);

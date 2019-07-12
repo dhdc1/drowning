@@ -302,5 +302,11 @@ class ReportDeadController extends Controller {
         }
         echo Json::encode(['output' => '', 'selected' => '']);
     }
+    
+    public function actionPrint($id=NULL){
+        $file = './doc/case.xlsx';
+        $d = "paper_$id.xlsx";
+        \Yii::$app->response->sendFile($file,$d);
+    }
 
 }
