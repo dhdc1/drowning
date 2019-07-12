@@ -26,7 +26,7 @@ $this->params['breadcrumbs'][] = 'ระบบสารสนเทศทาง�
             $cur_year--;
         }
         ?>
-        ปี พ.ศ. <?= Html::dropDownList($cyear, $cyear, $items,['style'=>'width:100px','id'=>'cyear'])?>
+        ปี พ.ศ. <?= Html::dropDownList($cyear, $cyear, $items, ['style' => 'width:100px', 'id' => 'cyear']) ?>
 
     </div>
 
@@ -41,6 +41,9 @@ $this->registerCssFile('//api.mapbox.com/mapbox.js/v3.1.1/mapbox.css');
 $this->registerCss($this->render('style.css'));
 $r = Url::toRoute('map-changwat');
 
+$by = (int) $cyear - 1;
+$y = (int) $cyear + 542;
+
 $js = <<<JS
  
 $('#cyear').change(function(){
@@ -54,7 +57,7 @@ L.mapbox.accessToken = 'pk.eyJ1IjoidGVobm5uIiwiYSI6ImNpZzF4bHV4NDE0dTZ1M200YWxwe
 var map = L.mapbox.map('map', 'mapbox.streets').setView([16, 100], 8);
 
 //จังหวัด
-var featureLayerChangwat = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/json-changwat&cyear=$cyear').on('ready', () => {
+var featureLayerChangwat = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/json-changwat&cyear=$by').on('ready', () => {
     map.fitBounds(featureLayerChangwat.getBounds());
     featureLayerChangwat.on('click', function (e) {
         if (e.layer.feature)
@@ -103,6 +106,7 @@ var featureLayerChangwat = L.mapbox.featureLayer().loadURL('index.php?r=gis/defa
 
 }).addTo(map);
 
+/*
 //อำเภอ
 var featureLayerAmpur = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/json-ampur').on('ready', () => {
     featureLayerAmpur.on('click', function (e) {
@@ -136,17 +140,27 @@ var featureLayerAmpur = L.mapbox.featureLayer().loadURL('index.php?r=gis/default
 
 });
 
+// อำเภอ
+*/
+
 // หมุดจมน้ำ
-var featureLayerIncident = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/point-incident').on('ready', () => {
+var featureLayerIncident = L.mapbox.featureLayer().loadURL('index.php?r=gis/default/point-incident&cyear=$cyear').on('ready', () => {
     featureLayerIncident.eachLayer((layer) => {
+        var lat = layer.getLatLng().lat;
+        var lng = layer.getLatLng().lng;
         var info = '<div>';
-        info += '<b>วันที่ ' + layer.feature.properties.drowning_date + '</b>';
-        info += ' ' + layer.feature.properties.title;
+        //info += '<b>ข้อมูลเหตุการณ์<b><br>';
+        info += '<b>เหตุการณ์วันที่ ' + layer.feature.properties.drowning_date + '</b>';
+        info += '<br>' + layer.feature.properties.case_info;
         info += '<br><img height="250" width="270" src="./' + layer.feature.properties.pic + '"/>';
         info += '<br>พื้นที่ ' + layer.feature.properties.area;
+        info += '<br><a href="https://maps.google.com?q='+lat+','+lng+'" target="_blank">นำทาง</a>';
         info += '</div>';
-        layer.bindPopup(info);
-        //console.log(layer.feature.properties.title);
+        
+        console.log(layer);
+        layer.on('mouseover',function(e){
+            layer.bindPopup(info);
+        });
     })
     
 });
@@ -164,7 +178,7 @@ var featureLayerWater = L.mapbox.featureLayer().loadURL('index.php?r=gis/default
 });
 
 
-
+/*
 //wms
 //ฝน
 // by Mr.UTEHN JADYANGTONE //
@@ -190,8 +204,9 @@ $.each(radars, function (key, value) {
     L.imageOverlay(imageUrl, imageBounds).addTo(rain).setOpacity(0.95);
 });
 //จบฝน
+*/
 
-
+/*
 //นำท่วม
 var flood_update = L.tileLayer.wms('http://tile.gistda.or.th/geoserver/flood/wms?', {
     layers: "floodarea_tambon",
@@ -209,6 +224,7 @@ var flood_percent = L.tileLayer.wms('http://tile.gistda.or.th/geoserver/wms?', {
     attribution: '<a href="http://flood.gistda.or.th" target="_blank"><b>GISTDA THAILAND</b></a>'
 });
 //จบน้ำท่วม
+*/
 
 //wms
 
@@ -237,15 +253,15 @@ let baseLayers = {
 let overlays = {
     'จุดเสี่ยง' : featureLayerWater,
     'จุดเกิดเหตุ': featureLayerIncident.addTo(map),
-    'อัตราตายภาพรวมจังหวัด': featureLayerChangwat,
-    'อัตราตายภาพรวมอำเภอ': featureLayerAmpur,
-    'เรดาห์น้ำฝน': rain,
+    'อัตราตาย': featureLayerChangwat,
+    //'อัตราตายภาพรวมอำเภอ': featureLayerAmpur,
+    //'เรดาห์น้ำฝน': rain,
     //'พื้นที่น้ำท่วมรายตำบลรอบ 7 วัน': flood_percent,
-    'พื้นที่น้ำท่วมรอบ7วัน': flood_update,
+    //'พื้นที่น้ำท่วมรอบ7วัน': flood_update,
 };
 var layerControl = L.control.layers(baseLayers, overlays).addTo(map);
 
-var label = '<b>อัตราตาย</b>';
+var label = '<b>อัตราตาย ปีพ.ศ. $y</b>';
 label += '<br><span style="background-color: #f44242;color: #f44242 ">..........</span> มากกว่า 7.5 ต่อแสน ปชก.';
 label += '<br><span style="background-color: yellow;color: yellow ">..........</span> 5.0 - 7.4 ต่อแสน ปชก.';
 label += '<br><span style="background-color: #42f47d;color: #42f47d ">..........</span> น้อยกว่า 5.0 ต่อแสน ปชก.';
@@ -270,4 +286,4 @@ map.on('overlayadd', function (e) {
 JS;
 
 
-$this->registerJs($js);
+$this->registerJs($js, yii\web\View::POS_READY);

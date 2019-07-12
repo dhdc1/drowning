@@ -96,7 +96,7 @@ var featureLayerIncident = L.mapbox.featureLayer().loadURL('index.php?r=gis/defa
         info += '<br>พื้นที่ ' + layer.feature.properties.area;
         info += '</div>';
         layer.bindPopup(info);
-        //console.log(layer.feature.properties.title);
+        console.log(layer.feature.properties.pic);
     })
     
 });

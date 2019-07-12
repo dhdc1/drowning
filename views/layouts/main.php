@@ -21,7 +21,7 @@ AppAsset::register($this);
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
         <?= Html::csrfMetaTags() ?>
-        <title><?= Html::encode($this->title) ?></title>
+        <title><?= Html::encode('GIS เด็กจมน้ำ เขตสุขภาพที่2') ?></title>
         <?php $this->head() ?>
     </head>
     <body>

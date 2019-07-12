@@ -4,6 +4,7 @@ namespace app\modules\gis\controllers;
 
 use yii\web\Controller;
 use yii\helpers\Json;
+use app\components\MyHelper;
 
 /**
  * Default controller for the `gis` module
@@ -128,8 +129,12 @@ GROUP BY a.ampurcode";
         return Json::encode($feature);
     }
 
-    public function actionPointIncident() {
-        $sql = " SELECT id,drowning_date,tmp_picture pic,sex,age,drowning_type,ISNULL(t.dead_date) not_dead
+    public function actionPointIncident($cyear=NULL) {
+        if(empty($cyear)){
+            $cyear = date('Y');
+        }
+        //$cyear = '2019';
+        $sql = " SELECT t.id,t.drowning_date,t.tmp_picture pic,t.sex,t.age,t.drowning_type,ISNULL(t.dead_date) not_dead
 ,concat('ต.',c1.tambonname,' อ.',c2.ampurname,' จ.',c3.changwatname) area
 , t.location_lon lon,t.location_lat lat  from report_dead t 
 
@@ -137,17 +142,17 @@ LEFT JOIN ctambon c1 ON c1.tamboncodefull = t.drowning_tambon
 LEFT JOIN campur c2 ON c2.ampurcodefull = t.drowning_amphur 
 LEFT JOIN cchangwat c3 ON c3.changwatcode = t.drowning_province
 
-WHERE t.location_lat <> '' or t.location_lon <> '' ";
+WHERE (t.location_lat <> '' or t.location_lon <> '') and YEAR(t.drowning_date) = '$cyear'";
         $raw = \Yii::$app->db->createCommand($sql)->queryAll();
 
         //$feature = [];
         $point = [];
         foreach ($raw as $value) {
             $p['type'] = 'Feature';
-            $p['properties']['pic'] = empty($value['pic'])?'img/placeholder.png':$value['pic'];
+            $p['properties']['pic'] = empty($value['pic'])?'img/placeholder.jpg':$value['pic'];
             $p['properties']['area'] = $value['area'];
-            $p['properties']['drowning_date'] = $value['drowning_date'];
-            $p['properties']['title'] = ' เพศ '.$value['sex'] . " อายุ " . $value['age']." ปี";
+            $p['properties']['drowning_date'] = MyHelper::thaiDate($value['drowning_date']);
+            $p['properties']['case_info'] = ' เพศ '.$value['sex'] . " อายุ " . $value['age']." ปี";
             $p['properties']['marker-size'] = 'large';
             $p['properties']['marker-color'] = $value['not_dead']=='0'?'#333333':'#5DFC0A';
             $p['properties']['marker-symbol'] = $value['not_dead']=='0'?'danger':'heart';
