@@ -72,7 +72,7 @@ $syear = $byear - 1;
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <?php
                 /* $sql = "SELECT * from tmp_count_pop";
 
@@ -134,9 +134,9 @@ $syear = $byear - 1;
                 </div>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <?php
-                $sqlcc = "SELECT * from tmp_count_type where y='$cyear' ORDER BY n desc limit 5";
+                $sqlcc = "SELECT * from tmp_count_type where y='$cyear' ORDER BY n desc";
                 $modelcc = \Yii::$app->db->createCommand($sqlcc);
                 $datacc = $modelcc->queryAll();
                 for ($i = 0; $i < sizeof($datacc); $i++) {
