@@ -41,8 +41,8 @@ $this->registerCssFile('//api.mapbox.com/mapbox.js/v3.1.1/mapbox.css');
 $this->registerCss($this->render('style.css'));
 $r = Url::toRoute('map-changwat');
 
-$by = (int) $cyear - 1;
-$y = (int) $cyear + 542;
+$by = (int) $cyear ;
+$y = (int) $cyear + 543;
 
 $js = <<<JS
  
