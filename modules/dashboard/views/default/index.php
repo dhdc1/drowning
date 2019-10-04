@@ -180,7 +180,7 @@ $syear = $byear - 1;
 ,COUNT(if(t.drowning_after_dead !='ไม่เสียชีวิต',1,null)) 'dead'
 ,COUNT(if(t.drowning_after_dead ='ไม่เสียชีวิต',1,null)) 'surviv'
 from report_dead t  left JOIN cchangwat c on c.changwatcode = t.drowning_province
-where t.s_year = '$cyear' and t.age <= '15' and t.national = 'ไทย'
+where t.s_year = '$cyear' and t.age < '15' and t.national = 'ไทย'
 GROUP BY t.drowning_province  ";
 
                 $model = \Yii::$app->db->createCommand($sql);
